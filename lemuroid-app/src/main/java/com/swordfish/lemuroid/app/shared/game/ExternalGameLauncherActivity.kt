@@ -56,12 +56,17 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
 
         setContentView(R.layout.activity_loading)
         if (savedInstanceState == null) {
-            val gameId = intent.data?.pathSegments?.let { it[it.size - 1].toInt() }!!
+            val param = intent.data?.pathSegments?.let { it[it.size - 1] }!!
+            val gameId = param.toIntOrNull()
 
             lifecycleScope.launch {
                 loadingState.value = true
                 try {
-                    loadGame(gameId)
+                    if (gameId == null) {
+                        loadGame(param)
+                    } else {
+                        loadGame(gameId)
+                    }
                 } catch (e: Throwable) {
                     displayErrorMessage()
                 }
@@ -88,6 +93,23 @@ class ExternalGameLauncherActivity : ImmersiveActivity() {
         val game =
             retrogradeDatabase.gameDao().selectById(gameId)
                 ?: throw IllegalArgumentException("Game not found: $gameId")
+
+        delay(animationDuration().toLong())
+
+        gameLauncher.launchGameAsync(
+            this,
+            game,
+            true,
+            TVHelper.isTV(applicationContext),
+        )
+    }
+
+    private suspend fun loadGame(filename: String) {
+        waitPendingOperations()
+
+        val game =
+            retrogradeDatabase.gameDao().selectByFileName(filename)
+                ?: throw IllegalArgumentException("Game not found: $filename")
 
         delay(animationDuration().toLong())
 

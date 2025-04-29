@@ -18,10 +18,10 @@ buildscript {
     id("com.github.ben-manes.versions") version "0.39.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.4.0"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
-    id("com.android.test") version "8.4.0" apply false
+    id("com.android.test") version "8.7.1" apply false
     id("org.jetbrains.kotlin.android") version deps.versions.kotlin apply false
-    id("androidx.baselineprofile") version "1.2.3" apply false
-    id("com.android.application") version "8.4.0" apply false
+    id("androidx.baselineprofile") version "1.2.4" apply false
+    id("com.android.application") version "8.7.1" apply false
 }
 
 allprojects {
@@ -31,6 +31,7 @@ allprojects {
         jcenter()
         mavenLocal()
         maven { setUrl("https://jitpack.io") }
+        maven(url="https://mirrors.huaweicloud.com/repository/maven")
     }
 
     configurations.all {

@@ -33,6 +33,9 @@ interface GameDao {
     @Query("SELECT * FROM games WHERE id = :id")
     suspend fun selectById(id: Int): Game?
 
+    @Query("SELECT * FROM games WHERE fileName = :fileName")
+    suspend fun selectByFileName(fileName: String): Game?
+
     @Query("SELECT * FROM games WHERE fileUri = :fileUri")
     fun selectByFileUri(fileUri: String): Game?
 
